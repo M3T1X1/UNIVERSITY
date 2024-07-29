@@ -1,0 +1,25 @@
+// Dlaczego program używa malloc do alokacji pamięci na wejście użytkownika?
+Program używa malloc, aby dynamicznie przydzielić pamięć na wejście użytkownika,
+co pozwala na alokację dokładnie takiej ilości pamięci, jaka jest potrzebna,
+i zapobiega przekroczeniu statycznie zdefiniowanego bufora.
+
+// Dlaczego w tym kodzie kilka razy występuje "free(buffor)"?
+Program używa "free(buffor)" aby zwolnić wcześniej przydzieloną pamięć przez malloc.
+Jest to ważne, aby uniknąć wycieków pamięci, które mogą prowadzić do wyczerpania dostępnej pamięci.
+
+// Dlaczego program używa srand(time(NULL)) do inicjalizacji generatora liczb losowych?
+Program używa srand(time(NULL)) do inicjalizacji generatora liczb losowych, aby zapewnić,
+że generowane liczby będą różne przy każdym uruchomieniu programu.
+Funkcja time(NULL) zwraca aktualny czas, który jest używany jako ziarno dla generatora.
+
+// Jaka jest rola funkcji strtod w tym programie?
+Funkcja strtod jest używana do konwersji ciągu znaków (string) na liczbę zmiennoprzecinkową (double).
+W tym przypadku jest używana do konwersji wyboru użytkownika na liczbę całkowitą.
+
+//Jak program sprawdza, czy wybór gracza jest poprawny?
+Program sprawdza, czy wybór gracza jest poprawny, sprawdzając każdy znak wejściowego ciągu znaków,
+aby upewnić się, że są one cyframi (isdigit). Następnie sprawdza, czy wartość mieści się w zakresie 1-3.
+
+// Jak program porównuje wybór gracza z wyborem komputera?
+Program porównuje wybór gracza z wyborem komputera używając instrukcji warunkowych if-else,
+aby sprawdzić, który z wyborów wygrywa, przegrywa lub czy jest remis.
