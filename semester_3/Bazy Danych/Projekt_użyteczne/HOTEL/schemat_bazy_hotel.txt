@@ -1,0 +1,40 @@
+Pracownicy
+-
+pesel PK varchar
+imie varchar
+nazwisko varchar 
+stanowiskoID FK >- Stanowiska.stanowiskoID int
+zarobki double 
+statusStudenta boolean
+
+Stanowiska
+-
+stanowiskoID PK int AUTOINCREMENT
+nazwa varchar
+minZarobki double
+maxZarobki double
+doswiadczenie varchar
+
+
+Goscie
+-
+pesel PK varchar
+imie varchar
+nazwisko varchar
+wiek int
+
+Pokoje
+-
+pokojID PK int AUTOINCREMENT
+cenaZaDobe double
+maxOsob int
+klasaPokoju int
+
+
+Rezerwacje
+-
+rezerwacjaID PK int AUTOINCREMENT
+pesel FK >- Goscie.pesel varchar
+pokojID FK >- Pokoje.pokojID varchar
+dataRozpoczecia date
+dataZakonczenia date

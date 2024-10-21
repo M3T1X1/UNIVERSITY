@@ -1,0 +1,71 @@
+Klienci
+-
+pesel PK varchar
+imie string
+naziwsko string
+nip FK varchar
+telefon varchar
+
+
+Zamowienia
+-
+zamowienieID PK int AUTOINCREMENT
+kwota double 
+pesel varchar
+vin FK varchar
+oplacono boolean
+placowkaID FK >- Placowki.placowkaID int
+
+
+Pracownicy
+-
+pesel PK int
+imie string
+nazwisko string
+stanowiskoID FK int
+placowkaID FK int
+zarobki double
+
+
+
+Samochody 
+-
+vin PK varchar
+marka varchar 
+model varchar
+rocznik int
+silnik varchar
+skrzynia varchar
+stan varchar
+cena varchar
+placowkaID FK >- Placowki.placowkaID int
+nipPodwykonawcy FK int
+
+Podwykonawcy
+-
+nip PK varchar FK >- Samochody.nipPodwykonawcy
+nazwa UNIQUE varchar
+specjalizacja varchar
+
+Placowki
+-
+placowkaID PK int AUTOINCREMENT FK >- Pracownicy.placowkaID
+miasto varchar
+ulica varchar
+numerBudynku varchar
+iloscSamochodow int
+iloscMiejscaOgolnie int
+iloscMiejscaPozostalego int
+
+Stanowiska
+-
+stanowiskoID PK int AUTOINCREMENT FK >- Pracownicy.stanowiskoID
+nazwaStanowiska varchar
+minZarobki double
+maxZarobki double
+doswiadczenie varchar 
+
+Firmy 
+-
+nip PK varchar FK >- Klienci.nip
+nazwaFirmy varchar UNIQUE
