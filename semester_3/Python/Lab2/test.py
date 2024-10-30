@@ -1,11 +1,14 @@
-elements = [1, "2", None, 0, False, True, 4, "3", 4, 3, False]
-count_dict = {}
+words = ["listen", "silent", "enlist", "inlets", "hello", "below", "elbow"]
+anagramy = {}
 
-for elem in elements:
-    key = (elem, type(elem))
-    if key in count_dict:
-        count_dict[key] += 1
+for word in words:
+    klucz = ''.join(sorted(word))
+
+    if klucz in anagramy:
+        anagramy[klucz].add(word)
     else:
-        count_dict[key] = 1
+        anagramy[klucz] = {word}
 
-print(count_dict)
+slownik_anagramow = {word: anagramy[''.join(sorted(word))] - {word} for word in words}
+
+print(slownik_anagramow)
