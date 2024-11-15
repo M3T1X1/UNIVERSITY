@@ -1,0 +1,8 @@
+dirs:
+  input: input/dir
+  output: output/dir
+max_file_mb: 10
+supported_formats:
+  - .txt
+  - .png
+  - .img
