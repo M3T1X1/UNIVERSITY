@@ -1,37 +1,51 @@
-import csv
-from typing import Callable
+import os
 
-import file
+def main():
+    username = input("Enter username: ")
+    password = input("Enter password: ")
 
+    while True:
+        command = input("Input command: ")
+        parts = command.split(" ", 2)
+        action = parts[0]
+        args = parts[1:]
 
-class Employee:
+        if action == "read" and args:
+            try:
+                with open(args[0], "r") as file:
+                    print(file.read())
+            except FileNotFoundError:
+                print(f"File '{args[0]}' has not been found.")
 
-    def __init__(self, name, salary,position):
-        self.name = name
-        self.salary = salary
-        self.position = position
+        elif action == "write" and len(args) > 1:
+            try:
+                with open(args[0], "w") as file:
+                    file.write(args[1].strip('"'))
+                print(f"File written '{args[0]}' ")
+            except Exception as e:
+                print(f"Error : {e}")
 
-        pracownik01 = Employee("Andrzej",120000,"programer")
+        elif action == "append" and len(args) > 1:
+            try:
+                with open(args[0], "a") as file:
+                    file.write(args[1].strip('"') + "\n")
+                print(f"Appended to file '{args[0]}' ")
+            except Exception as e:
+                print(f"Error:{e}")
 
-    def to_csv_string(self):
-        return f"{self.name},{self.salary},{self.position}"
+        elif action == "delete" and args:
+            try:
+                os.remove(args[0])
+                print(f"File '{args[0]}' deleted ")
+            except FileNotFoundError:
+                print(f"File '{args[0]}' not found")
 
-    @staticmethod
-    def to_file(file_handle,employee:list['Employee']):
-        for e in employee:
-            file.write(e.to_csv_string())
+        elif action == "quit":
+            print("Exiting ")
+            break
 
-    @staticmethod
-    def from_file(file_handle):
-        try:
-            file_handle.open("r")
-        except FileNotFoundError:
-            print("File not found")
+        else:
+            print("Unknown command")
 
-        employees = []
-        reader = csv.reader(file_handle)
-        for row in reader:
-            if row:
-                name, salary, position = row
-                employees.append(Employee(name, salary, position))
-        return employees
+if __name__ == "__main__":
+    main()
