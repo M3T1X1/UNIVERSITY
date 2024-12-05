@@ -1,19 +1,5 @@
 from sympy import Matrix
 
-def gauss(A, b):
-    # Tworzymy rozszerzoną macierz [A | b]
-    roz_matrix = Matrix(A).row_join(Matrix(b))
-
-    # Obliczamy postać schodkową zredukowaną (RREF) macierzy
-    rref_matrix, _ = roz_matrix.rref()  # rref() zwraca macierz RREF i listę pivotów
-
-    # Wyciągamy ostatnią kolumnę macierzy RREF, która zawiera rozwiązania
-    rozw = rref_matrix[:, -1]
-
-    return list(rozw)
-
-
-# Definicja macierzy współczynników A
 A = [[2, 3, 1],
      [4, 7, 7],
      [6, 18, 22]]
@@ -21,8 +7,27 @@ A = [[2, 3, 1],
 # Wektor prawej strony b
 b = [5, 6, 8]
 
+def gauss(A, b):
+    # Tworzymy rozszerzoną macierz [A | b]
+    roz_matrix = Matrix(A).row_join(Matrix(b))
+
+    # Obliczamy postać schodkową  (RREF) macierzy
+    rref_matrix, _ = roz_matrix.rref()  # rref() zwraca macierz RREF i listę pivotów
+
+    # Wyciągamy ostatnią kolumnę macierzy RREF, która zawiera rozwiązania
+    rozw = rref_matrix[:, -1]
+
+    return list(rozw)
+
 rozw = gauss(A, b)
 print("Rozwiązanie układu Ax = b:", rozw)
+
+
+
+
+
+
+
 
 
 """
