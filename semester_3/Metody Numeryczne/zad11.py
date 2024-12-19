@@ -1,32 +1,36 @@
 from sympy import Matrix
 
-def gauss(A, b):
-    # Tworzymy rozszerzoną macierz [A | b]
-    roz_matrix = Matrix(A).row_join(Matrix(b))
-
-    # Obliczamy postać schodkową zredukowaną (RREF) macierzy
-    rref_matrix, _ = roz_matrix.rref()  # rref() zwraca macierz RREF i listę pivotów
-
-    # Wyciągamy ostatnią kolumnę macierzy RREF, która zawiera rozwiązania
-    rozw = rref_matrix[:, -1]
-
-    return list(rozw)
-
-
-# Definicja macierzy współczynników A
-A = [[2, 3, 1],
-     [4, 7, 7],
-     [6, 18, 22]]
+A = [[4, 1, 3],
+     [2, 5, 6],
+     [12, 8, 3]]
 
 # Wektor prawej strony b
-b = [5, 6, 8]
+b = [7, 5, 8]
+
+def gauss(A, b):
+    # Tworzymy rozszerzoną macierz
+    macierzRozszerzona = Matrix(A).row_join(Matrix(b))
+
+    # Obliczamy postać schodkową zredukowaną macierzy
+    # Druga wartość (lista indeksów pivotów) jest ignorowana, ponieważ _ oznacza że nie potrzebujemy jej do dalszych obliczeń
+    # Pivot to pierwszy niezerowy element w każdym wierszu macierzy po lewej stronie, gdy macierz jest przkształcana w postać schodkową
+    macierzZredukowana, _ = macierzRozszerzona.rref()  # rref() zwraca macierz zredukowaną i listę pivotów
+
+    # Wyciągamy ostatnią kolumnę macierzy zredukowanej, która zawiera rozwiązania
+    #  : Oznacza, że wybieramy wszystkie wiersze macierzy.
+    # -1 Oznacza indeks ostatniej kolumny. Indeks -1 w Pythonie oznacza "ostatni element" (działa to również na listach i innych iterowalnych strukturach).
+    wynik = macierzZredukowana[:, -1]
+
+    return list(wynik)
+
 
 rozw = gauss(A, b)
 print("Rozwiązanie układu Ax = b:", rozw)
 
 
 """
-1. Macierz A (kwadratową, np. 3x3) rozbijamy na dwie prostsze macierze:
+1. Macierz A rozbijamy na dwie prostsze macierze:
+
 - L – macierz dolna, która ma 1 na przekątnej i inne liczby poniżej,
 - U – macierz górna, która ma liczby tylko nad przekątną.
 
