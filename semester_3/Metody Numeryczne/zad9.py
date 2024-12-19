@@ -1,6 +1,10 @@
 # Zadanie 9 - Całkowanie numeryczne - metoda parabol.
 # Obliczyć wartość całki ∫(od -3 do 1) [sin(x) * e^(-3x) + x^3] dx oraz jej błąd maksymalny
 import math
+import sympy as sp
+
+#wzor B=((b-a)*h^4)/180 * max.f(4)
+
 
 # Funkcja podcałkowa
 def f(x):
@@ -9,17 +13,16 @@ def f(x):
 # Zakres całkowania
 a = -3  # dolna granica
 b = 1   # górna granica
-n = 100  # liczba przedziałów (musi być parzysta dla metody Simpsona)
+n = 10  # liczba przedziałów (musi być parzysta dla metody Simpsona)
 
 # Sprawdzenie, czy liczba przedziałów jest parzysta
 if n % 2 != 0:
-    n += 1  # Wymuszamy parzystość
+    n += 1
 
-# Szerokość przedziału
 h = (b - a) / n
-
+x = sp.Symbol('x')
 # Metoda Simpsona
-def simpson_integration(a, b, n, func):
+def simpson(a, b, n, func):
     integral = func(a) + func(b)  # Wartości funkcji na krańcach
     for i in range(1, n):
         x_i = a + i * h
@@ -30,17 +33,22 @@ def simpson_integration(a, b, n, func):
     return integral * (h / 3)
 
 # Obliczenie wartości całki
-result = simpson_integration(a, b, n, f)
+wynik = simpson(a, b, n, f)
 
-# Wyznaczenie błędu maksymalnego
-# Obliczamy wartość maksymalnej czwartej pochodnej na przedziale
-def f_derivative_4(x):
-    return math.sin(x) * (-3)**4 * math.exp(-3 * x)  # Przybliżenie wyłącznie dla składnika wykładniczego
+#f = max(abs(simpson(a,b,n,f)),abs(simpson(a,b,n,f)))
+def f4(x):
+    wartoscF = math.sin(x)*sp.exp(-3*x) + x**3
+    wartoscF4 = sp.diff(wartoscF, x,4)
+    return wartoscF4.subs(x,wartoscF)
 
-# Przybliżony błąd maksymalny
-M4 = max([abs(f_derivative_4(x)) for x in [a, b]])  # Maksymalna wartość pochodnej w krańcach
-error_bound = (b - a) * h**4 * M4 / 180
+def bladMax(a,b,h,f):
+  wynik = ((b-a)*h**4/180) * f
+  return wynik
 
-# Wyświetlenie wyników
-print(f"Wartość całki wynosi: {result:.5f}")
-print(f"Przybliżony błąd maksymalny wynosi: {error_bound:.5e}")
+f__a = f4(a)
+f__b = f4(b)
+
+bladMaksymalny = bladMax(a, b, n, wynik)
+
+print(f"Wartość całki wynosi: {wynik:.5f}")
+print(f"Blad maksymalny: {bladMaksymalny:.5f}")

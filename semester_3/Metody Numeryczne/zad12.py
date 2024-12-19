@@ -24,7 +24,7 @@ print("Współczynniki wielomianu aproksymacyjnego:")
 for i, c in enumerate(coefficients):
     print(f"a{i} = {c:.4f}")
 print("\nWielomian aproksymacyjny:")
-print(sp.expand(polynomial))
+print(sp.simplify(polynomial))
 
 
 # Wykres
