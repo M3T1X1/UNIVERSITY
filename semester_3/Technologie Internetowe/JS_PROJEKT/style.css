@@ -1,13 +1,15 @@
-body 
-{
+body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column; 
+    min-height: 100vh; 
 }
 
-header 
-{
+header {
     background: linear-gradient(90deg, green, lime);
     color: #fff;
     display: flex;
@@ -20,53 +22,31 @@ header
     text-align: center; 
 }
 
-header h1 
-{
+header h1 {
     font-size: 2.5rem;
     text-shadow: 3px 3px 5px #000;
     right: 30%;
-
 }
 
-
-footer 
-{
-    background: linear-gradient(90deg, lime, green);
-    padding: 20px;
-    text-align: center;
-    color: #fff;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.8);
-}
-
-footer h3
-{
-    font-size: 1rem;
-    text-shadow: 1px 1px 2px #000;
-    right: 30%;
-}
-
-main 
-{
+main {
+    flex: 1; 
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 2em;
 }
 
-.dropdown-container 
-{
-     margin: 1em 0;
+.dropdown-container {
+    margin: 1em 0;
 }
 
-select 
-{
+select {
     padding: 0.5em;
     font-size: 1em;
     margin-right: 1em;
 }
 
-button 
-{
+button {
     padding: 0.5em 1em;
     font-size: 1em;
     background-color: #4CAF50;
@@ -75,7 +55,20 @@ button
     cursor: pointer;
 }
 
-button:hover 
-{
+button:hover {
     background-color: #45a049;
+}
+
+#result {
+    margin-top: 2em;
+    color: #333;
+}
+
+footer {
+    background: linear-gradient(90deg, lime, green);
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.8);
+    font-size: 1rem;
 }

@@ -14,26 +14,31 @@
 
     <main>
         <div class="dropdown-container">
-            <select>
+            <select id="zespół">
                 <option value="">Wybierz zespół</option>
-                <option value="opcja1">Opcja 1</option>
-                <option value="opcja2">Opcja 2</option>
-                <option value="opcja3">Opcja 3</option>
+                <option value="opcja1">Amon Amarth</option>
+                <option value="opcja2">Vader</option>
+                <option value="opcja3">Arch Enemy</option>
             </select>
-            <select>
+            <select id="lokalizacja">
                 <option value="">Wybierz lokalizacje</option>
-                <option value="opcja1">Opcja 1</option>
-                <option value="opcja2">Opcja 2</option>
-                <option value="opcja3">Opcja 3</option>
+                <option value="opcja1">Warszawa</option>
+                <option value="opcja2">Kraków</option>
+                <option value="opcja3">Rzeszów</option>
             </select>
-            <select>
+            <select id="sektor">
                 <option value="">Wybierz sektor</option>
-                <option value="opcja1">Opcja 1</option>
-                <option value="opcja2">Opcja 2</option>
-                <option value="opcja3">Opcja 3</option>
+                <option value="opcja1">Miejsca pod sceną</option>
+                <option value="opcja2">Płyta</option>
+                <option value="opcja3">Trybuny</option>
             </select>
         </div>
-        <button onclick="resetDropdowns()">Resetuj</button>
+        <button id="reset">Resetuj</button> <br>
+        <button id="count">Oblicz</button>
+
+        <div id="result"></div>
+
+
     </main>
 
     <footer>
