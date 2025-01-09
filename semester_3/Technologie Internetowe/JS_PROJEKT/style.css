@@ -59,7 +59,16 @@ button:hover {
     background-color: #45a049;
 }
 
-#result {
+input
+{
+    margin-top: 2em;
+}
+
+#resultChoices {
+    margin-top: 2em;
+    color: #333;
+}
+#resultValue {
     margin-top: 2em;
     color: #333;
 }

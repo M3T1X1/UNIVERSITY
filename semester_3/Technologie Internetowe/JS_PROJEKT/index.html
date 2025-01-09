@@ -7,7 +7,7 @@
     <script src="script.js"></script>
     <title>Kalkulator Cen Biletów</title>   
 </head>
-<body>
+<body onload="onloadAlert()">
     <header>
         <h1>Kalkulator Cen Biletów</h1>
     </header>
@@ -16,27 +16,30 @@
         <div class="dropdown-container">
             <select id="zespół">
                 <option value="">Wybierz zespół</option>
-                <option value="opcja1">Amon Amarth</option>
-                <option value="opcja2">Vader</option>
-                <option value="opcja3">Arch Enemy</option>
+                <option value="Amon Amarth">Amon Amarth</option>
+                <option value="Vader">Vader</option>
+                <option value="Arch Enemy">Arch Enemy</option>
             </select>
             <select id="lokalizacja">
                 <option value="">Wybierz lokalizacje</option>
-                <option value="opcja1">Warszawa</option>
-                <option value="opcja2">Kraków</option>
-                <option value="opcja3">Rzeszów</option>
+                <option value="Warszawa">Warszawa</option>
+                <option value="Kraków">Kraków</option>
+                <option value="Rzeszów">Rzeszów</option>
             </select>
             <select id="sektor">
                 <option value="">Wybierz sektor</option>
-                <option value="opcja1">Miejsca pod sceną</option>
-                <option value="opcja2">Płyta</option>
-                <option value="opcja3">Trybuny</option>
+                <option value="Miejsca pod sceną">Miejsca pod sceną</option>
+                <option value="Płyta">Płyta</option>
+                <option value="Trybuny">Trybuny</option>
             </select>
         </div>
         <button id="reset">Resetuj</button> <br>
         <button id="count">Oblicz</button>
 
-        <div id="result"></div>
+        <div id="resultChoices"></div>
+        <div id="resultValue"></div>
+
+        <input type="text" id="kodPromocyjny" placeholder="Kod promocyjny">
 
 
     </main>
