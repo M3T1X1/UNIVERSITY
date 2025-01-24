@@ -1,0 +1,8 @@
+W folderze znajduą się dwie maszyny. Jedna to server z zainstalowaną oraz skonfigurowaną usługą apache, a druga to klient. W razie problemów przy imporcie maszyn, należy zmienić model karty sieciowej z "Killer E3100G" na inny.
+
+Login do serwera: admin1
+Hasło do serwera: admin1
+
+Link do pobrania projektu:
+
+https://drive.google.com/drive/folders/1Kpm-yqZmjL0wEJ_lcVeqvbZCerVXNHmo?usp=sharing
