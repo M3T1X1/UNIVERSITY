@@ -1,0 +1,16 @@
+1011          – liczba binarna
+8732          – liczba dziesiętna
+[2][2][1][1]  - reprezentacja little-endian
+
+1234          - liczba ósemkowa *
+3A5B          – liczba szesnastkowa *
+[1][2][3][4]  - reprezentacja little-endian *
+
+3210
+1011 = 1*2^0 + 1*2^1 + 0*2^2 + 1*2*3 = 11
+
+3210
+8732 = 2*10^0 + 3*10^1 + 7*10^2 + 8*10^3 = 2 + 30 + 700 + 8000
+
+ 0  1  2  3
+[2][2][1][1] = 2*256^0 + 2*256^1 + 1*256^2 + 1*256^3 = 16843266  
