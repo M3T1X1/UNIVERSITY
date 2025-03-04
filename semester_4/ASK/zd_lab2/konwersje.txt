@@ -1,0 +1,37 @@
+- dziesiętne 11 na liczbę binarną
+
+11 / 2 = 5   r0 = 1
+5 / 2 = 2    r1 = 1
+2 / 2 = 0    r2 = 0
+1 / 2 = 0    r3 = 1
+
+11 = 1011
+
+
+- szesnastkowe 10AF na liczbę binarną
+
+ 8    4    2    1 
+[ ]  [ ]  [ ]  [ ] ^
+
+10AF = 0001 0000 1010 1111
+
+
+- dziesiętne 99 na liczbę binarną *
+
+99 / 2 = 44   r0 = 1
+44 / 2 = 22   r1 = 0 
+22 / 2 = 11   r2 = 0 
+11 / 2 = 5    r3 = 1
+5 / 2 = 2     r4 = 1
+2 / 2 = 1     r5 = 0
+1 / 2 = 0     r6 = 1
+
+99 = 1011001
+
+
+- szesnastkowe 3A58 na liczbę binarną *
+
+ 8    4    2    1 
+[ ]  [ ]  [ ]  [ ] ^
+
+3A58 = 0011 1010 0101 1000
