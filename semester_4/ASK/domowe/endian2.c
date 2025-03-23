@@ -4,6 +4,8 @@
 
 int main()
 {
+	printf("endian2.c\n\n");
+	
 	int x = 1;
  	char *p_X = (char*)&x;  // wskaznik na najmlodszy bajt liczby 1
  	
