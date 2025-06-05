@@ -2,9 +2,10 @@
 
 ;        esp -> [ret]  ; ret - adres powrotu do asmloader
 
-;        f(x) = 5*x
+;        f(x) = x - y^2 || double
 
-x        equ __?float64?__(1.5)
+x        equ __?float64?__(5.0)
+y        equ __?float64?__(2.0)
 
 ;        1. Umiesc dane w pamieci procesu
 
@@ -13,7 +14,8 @@ x        equ __?float64?__(1.5)
 
 
 addr_x   dq x    ; [ ][ ][ ][ ][ ][ ][ ][ ]  ; define quad word
-addr_5   dq 5.0  ; [ ][ ][ ][ ][ ][ ][ ][ ]  ; addr_5 = addr_x + 8
+addr_y   dq y  ; [ ][ ][ ][ ][ ][ ][ ][ ]  ; addr_y = addr_x + 8
+addr_y2  dq y  ; [ ][ ][ ][ ][ ][ ][ ][ ]  ; addr_y2 = addr_x + 16
 
 getaddr:
 
@@ -28,15 +30,27 @@ getaddr:
          mov ebp, [esp]  ; ebp = *(int*)esp = addr_x
 
          fld qword [ebp]    ; *(double*)(ebp+0) = *(double*)addr_x = x -> st = [x]     ; fpu load floating-point
-         fld qword [ebp+8]  ; *(double*)(ebp+8) = *(double*)addr_5 = 5 -> st = [5, x]  ;
+         fld qword [ebp+8]  ; *(double*)(ebp+8) = *(double*)addr_y = y -> st = [y, x]  ;
+         fld qword [ebp+16]  ; *(double*)(ebp+8) = *(double*)addr_y2 = y2 -> st = [y2, y, x]  ;
 
-;        st = [st0, st1] = [5, x]
+;        st = [st0, st1, st2] = [y2, y, x]
+
+;        st0 -> y2
+;        st1 -> y
+;        st2 -> x
+
+;        st0 -> x
+;        st1 -> y
+
+         fmulp st1
+         fsubr st1
+
 
 ;        3. Wykonaj obliczenia przy pomocy FPU
 
 ;        fmulp st1  ; [st0, st1] => [st0, st1*st0] => [st1*st0]
 
-         fmulp st1  ; st1 = st1 * st0 and pop
+;         fmulp st1  ; st1 = st1 * st0 and pop
 
 ;        st = [st0] = [5*x]
 
@@ -56,7 +70,7 @@ getaddr:
 
          call getaddr2  ; push on the stack the run-time address of format and jump to getaddr2
 format:
-         db "f(x) = %f", 0xA, 0
+         db "f(x, y) = %f", 0xA, 0
 getaddr2:
 
 ;        esp -> [format][fl][fh][ret]
