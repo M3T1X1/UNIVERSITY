@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 from ucimlrepo import fetch_ucirepo
 import pandas as pd
 
@@ -7,19 +6,22 @@ import pandas as pd
 #Przetestuj wszystkie trzy rodzaje korelacji.
 
 iris = fetch_ucirepo(id=53)
-
 features = iris.data.features
 target = iris.data.targets['class']
 
 df = features.copy()
 df['species'] = target
 
-kendall = df.drop(columns=['species']).corr(method='kendall')
-pearson = df.drop(columns=['species']).corr(method='pearson')
-spearmen = df.drop(columns=['species']).corr(method='spearman')
+species = pd.get_dummies(df['species'])
+df = pd.concat([df.drop(columns=['species']), species], axis=1)
 
-"""print(f"Kendall: {kendall} \n")
-print(f"Pearson: {pearson} \n")
-print(f"Spearmen: {spearmen} \n")"""
+correlations = ['pearson', 'spearman', 'kendall']
 
-
+for correlation in correlations:
+    corr = df.corr(method=correlation)
+    species_corr = corr.loc[features.columns, species.columns]
+    print(f"Ranking -> {correlation}")
+    for specie in species.columns:
+        rank = species_corr[specie].abs().sort_values(ascending=False)
+        for column, value in rank.items():
+            print(f"{column}: {value}")
