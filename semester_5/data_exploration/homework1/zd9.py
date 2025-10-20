@@ -18,3 +18,5 @@ selected_columns['REZYGN'] = selected_columns['REZYGN'].map({0 : 'NIE', 1 : 'TAK
 #pd.set_option('display.max_rows', None)
 
 print(selected_columns)
+
+selected_columns.to_csv('rezygnacje_TAK_NIE.csv', index=False)
