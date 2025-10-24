@@ -1,0 +1,99 @@
+public class Zad3_BST {
+    private static class Node {
+        Book book;
+        Node left, right;
+
+        Node(Book book) {
+            this.book = book;
+            left = right = null;
+        }
+    }
+
+    private Node root;
+
+    public void add(Book book) {
+        root = addRecursive(root, book);
+    }
+
+    private Node addRecursive(Node current, Book book) {
+        if (current == null) {
+            return new Node(book);
+        }
+        if (book.compareTo(current.book) < 0) {
+            current.left = addRecursive(current.left, book);
+        } else if (book.compareTo(current.book) > 0) {
+            current.right = addRecursive(current.right, book);
+        }
+        return current;
+    }
+
+    public boolean remove(Book book) {
+        if (root == null) {
+            return false;
+        }
+        root = removeRecursive(root, book);
+        return true;
+    }
+
+    private Node removeRecursive(Node current, Book book) {
+        if (current == null) {
+            return null;
+        }
+
+        if (book.compareTo(current.book) < 0) {
+            current.left = removeRecursive(current.left, book);
+        } else if (book.compareTo(current.book) > 0) {
+            current.right = removeRecursive(current.right, book);
+        } else {
+            if (current.left == null && current.right == null) {
+                return null;
+            } else if (current.left == null) {
+                return current.right;
+            } else if (current.right == null) {
+                return current.left;
+            }
+
+            Node smallest = findMin(current.right);
+            current.book = smallest.book;
+            current.right = removeRecursive(current.right, smallest.book);
+        }
+        return current;
+    }
+
+    private Node findMin(Node current) {
+        while (current.left != null) {
+            current = current.left;
+        }
+        return current;
+    }
+
+    public Book getMin() {
+        if (root == null) {
+            return null;
+        }
+        return findMin(root).book;
+    }
+
+    public int getHeight() {
+        return getHeightRecursive(root);
+    }
+
+    private int getHeightRecursive(Node current) {
+        if (current == null) {
+            return 0;
+        }
+        return 1 + Math.max(getHeightRecursive(current.left), getHeightRecursive(current.right));
+    }
+
+    public void printTree() {
+        printTreeRecursive(root, 0);
+    }
+
+    private void printTreeRecursive(Node current, int depth) {
+        if (current != null) {
+            printTreeRecursive(current.right, depth + 1);
+            System.out.println(" ".repeat(4 * depth) + current.book);
+            printTreeRecursive(current.left, depth + 1);
+        }
+    }
+}

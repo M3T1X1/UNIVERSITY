@@ -1,11 +1,12 @@
 from sympy import Matrix
 
-A = [[4, 1, 3],
-     [2, 5, 6],
-     [12, 8, 3]]
+A = [[3, 0, 6],
+     [1, 2, 8],
+     [4, 5, -2]]
 
 # Wektor prawej strony b
-b = [7, 5, 8]
+b = [-12, -12, 39]
+
 
 def gauss(A, b):
     # Tworzymy rozszerzoną macierz
@@ -24,8 +25,9 @@ def gauss(A, b):
     return list(wynik)
 
 
-rozw = gauss(A, b)
-print("Rozwiązanie układu Ax = b:", rozw)
+
+wynik = gauss(A, b)
+print("Rozwiązanie układu Ax = b:", wynik)
 
 
 """

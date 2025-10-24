@@ -1,0 +1,16 @@
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        // Zadanie 3: Drzewo BST
+        Zad3_BST bst = new Zad3_BST();
+        bst.add(new Book(2021, "Book A", "Author Z"));
+        bst.add(new Book(2019, "Book B", "Author Y"));
+        bst.add(new Book(2021, "Book A", "Author A"));
+        bst.add(new Book(2020, "Book C", "Author X"));
+        System.out.println("\nDrzewo BST:");
+        bst.printTree();
+        System.out.println("Min: " + bst.getMin());
+        System.out.println("Height: " + bst.getHeight());
+    }
+}

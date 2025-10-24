@@ -1,0 +1,28 @@
+public class Book implements Comparable<Book> {
+    int year;
+    String title;
+    String author;
+
+    public Book(int year, String title, String author) {
+        this.year = year;
+        this.title = title;
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + year + ", " + title + ", " + author + "]";
+    }
+
+    @Override
+    public int compareTo(Book other) {
+        if (this.year != other.year) {
+            return this.year - other.year;
+        }
+        int titleComparison = this.title.compareTo(other.title);
+        if (titleComparison != 0) {
+            return titleComparison;
+        }
+        return this.author.compareTo(other.author);
+    }
+}
