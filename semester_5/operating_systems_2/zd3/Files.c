@@ -23,26 +23,26 @@ void printLines(FILE *fp) {
 }
 
 void copy(const char *addr1, const char *addr2) {
-    FILE *src = fopen(addr1, "r");
-    if (src == NULL) {
+    FILE *source = fopen(addr1, "r");
+    if (source == NULL) {
         perror(addr1);
         exit(EXIT_FAILURE);
     }
 
-    FILE *dest = fopen(addr2, "w");
-    if (dest == NULL) {
+    FILE *destination = fopen(addr2, "w");
+    if (destination == NULL) {
         perror(addr2);
-        fclose(src);
+        fclose(source);
         exit(EXIT_FAILURE);
     }
 
     int ch;
-    while ((ch = fgetc(src)) != EOF) {
-        fputc(ch, dest);
+    while ((ch = fgetc(source)) != EOF) {
+        fputc(ch, destination);
     }
 
-    fclose(src);
-    fclose(dest);
+    fclose(source);
+    fclose(destination);
 }
 
 int main(int argc, char *argv[]) {
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 
     fclose(fp);
     
-    copy("plik.txt", "skopiowany_plik.txt");
+    copy("plik.txt", "plik_skopiowany.txt");
 
     return 0;
 }

@@ -53,13 +53,13 @@ int countWords1(FILE *fp) {
 int countWords2(FILE *fp) {
     int counter = 0;
     int c;
-	int prev = ' '; 
+	int previous = ' ';
     
     while ((c = fgetc(fp)) != EOF) {
-        if (!isspace(c) && isspace(prev)) {
+        if (!isspace(c) && isspace(previous)) {
             counter++;
         }
-        prev = c;
+        previous = c;
     }
     return counter;
 }

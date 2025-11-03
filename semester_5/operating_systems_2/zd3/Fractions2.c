@@ -4,10 +4,10 @@
 int main(int argc, char *argv[]) {
     printf("Fractions2.c\n\n");
     
-    char buffer[10];
+    char buff[10];
     
-    if (fgets(buffer, sizeof(buffer), stdin)) {
-        char *p = buffer;
+    if (fgets(buff, sizeof(buff), stdin)) {
+        char *p = buff;
         while (*p != '\0') {
             if (*p == '\n') {
                 *p = '\0';
@@ -16,9 +16,9 @@ int main(int argc, char *argv[]) {
             p++;
         }
         
-        printf("Wczytany tekst: \"%s\"\n", buffer);
+        printf("Tekst: \"%s\"\n", buff);
     } else {
-        printf("Blad podczas odczytu!\n");
+        printf("Error\n");
     }
     
 	return 0;
