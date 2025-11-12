@@ -9,7 +9,7 @@ df = pd.read_csv('diabetes.csv')
 X = df.drop(columns=['decision'])
 y = df['decision']
 
-k_values = list(range(2, 11))
+k_values = list(range(2, 20))
 accuracies = []
 
 loo = LeaveOneOut()
