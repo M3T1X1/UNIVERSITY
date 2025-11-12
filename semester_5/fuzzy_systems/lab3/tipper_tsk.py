@@ -65,7 +65,7 @@ controller.add_rule([('food', high), ('service', high_service)], [('tip', high_t
 
 # podajemy ostre wejścia i uzyskujemy wyjście
 # biblioteka wymaga powtórzenia wejść ostrych jako argumentów funkcji na wyjściu
-it2out = controller.evaluate({"food": 6.5, "service": 5.0}, (6.5, 5,))
+it2out = controller.evaluate({"food": 0.0, "service": 5.0}, (6.5, 5,))
 print(it2out) # tutaj dostajemy słownik wszystkich wyjść
 print(it2out['tip']) # tutaj możemy pobrać konkretną wartość wyjścia
 
