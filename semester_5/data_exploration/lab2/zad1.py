@@ -17,6 +17,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
+
 data = pd.read_csv('rezygnacje.csv')
 
 column_number = data.shape[1]
@@ -35,19 +36,16 @@ train_size = [0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1]
 
 for i in train_size:
     print(f"Wartości dla wielkosci testu : {i}")
-    datasets = train_test_split(value_attributes, test_size=i, random_state=1234)
+    datasets = train_test_split(value_attributes, decision_attribute, test_size=i, random_state=1234)
 
-    features_train = datasets[0]
-    features_test = datasets[1]
-    labels_train = datasets[2]
-    labels_test = datasets[3]
+    x_train, x_test, y_train, y_test = datasets
+
 
     model = KNeighborsClassifier(n_neighbors=neighbors_number, metric=metric)
-    model.fit(features_train, np.ravel(labels_train))  # Uczenie klasyfikatora na części treningowej
+    model.fit(x_train, np.ravel(y_train))  
 
-    labels_predicted = model.predict(features_test)  # Generowania decyzji dla części testowej
+    labels_predicted = model.predict(x_test)
 
-    # Policzenie jakości klasyfikacji przez porównanie: labels_predicted i labels_test
-    accuracy = metrics.accuracy_score(labels_test, labels_predicted)
+    accuracy = metrics.accuracy_score(y_test, labels_predicted)
 
     print("Dokładnośc klasyfikacji=", accuracy)
