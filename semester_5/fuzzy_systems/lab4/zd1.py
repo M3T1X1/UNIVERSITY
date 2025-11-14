@@ -7,7 +7,7 @@ service_universe = np.linspace(0.0, 10.0, 1000)
 
 very_low = T1FS(food_universe, trapezoid_mf, [-1, 0, 1, 2, 1.0])
 very_low.plot('very low food')
-low = T1FS(food_universe, trapezoid_mf, [1, 2, 4, 5, 1.0])
+low = T1FS(food_universe, trapezoid_mf, [2, 3, 5, 6, 1.0])
 low.plot('low food')
 medium = T1FS(food_universe, tri_mf, [3, 5, 7, 1.0])
 medium.plot('medium food')
@@ -15,7 +15,7 @@ high = T1FS(food_universe, trapezoid_mf, [6, 7, 10, 11, 1.0])
 high.plot('high food')
 
 very_low_service = T1FS(service_universe, trapezoid_mf, [-1, 0, 1, 2, 1.0])
-low_service = T1FS(service_universe, trapezoid_mf, [-1, 0, 3, 5, 1.0])
+low_service = T1FS(service_universe, trapezoid_mf, [2, 3, 5, 6, 1.0])
 medium_service = T1FS(service_universe, tri_mf, [3, 5, 7, 1.0])
 high_service = T1FS(service_universe, trapezoid_mf, [6, 7, 10, 11, 1.0])
 
@@ -30,7 +30,7 @@ def medium_tip(x1, x2):
 def high_tip(x1, x2):
     return 0 + x1 + x2
 
-def no_tip():
+def no_tip(x1, x2):
     return 0
 
 controller = T1TSK()
@@ -57,21 +57,22 @@ controller.add_rule([('food', high), ('service', high_service)], [('tip', high_t
 values = [[0,0],[10,0],[0,10],[10,10],[5,5],[0,5],[5,0]]
 
 for quality, service in values:
-    output = controller.evaluate({"food":quality, "service":service}, (6.5, 5,))
+    output = controller.evaluate({"food":quality, "service":service}, (quality, service,))
     print(output)
 print("\n")
 
 value = controller.evaluate({"food":6.5, "service":5}, (6.5, 5,))
 print(value)
 
+
 """
-{'tip': np.float64(5.75)} <- dla [0,0] mamy wartość tipa 5.75 (low tip)
-{'tip': np.float64(8.05)} <- dla [10,0] mamy wartość tipa 8.05 (medium tip)
-{'tip': np.float64(8.05)} <- dla [0,10] mamy wartość tipa 8.05 (medium tip)
-{'tip': np.float64(11.5)} <- dla [10,10] mamy wartość tipa 11.5 (high tip)
-{'tip': np.float64(8.05)} <- dla [5,5] mamy wartość tipa 8.05 (medium tip)
-{'tip': np.float64(5.75)} <- dla [0,5] mamy wartość tipa 5.75 (low tip)
-{'tip': np.float64(5.75)} <- dla [5,0] mamy wartość tipa 5.75 (low tip)
+{'tip': np.float64(0.0)} no tip [0,0]
+{'tip': np.float64(0.0)} no tip [10,0]
+{'tip': np.float64(0.0)} no tip [0,10]
+{'tip': np.float64(20.0)} high tip [10,10]
+{'tip': np.float64(5.5)} medium tip [5,5]
+{'tip': np.float64(0.0)} no tip [0,5]
+{'tip': np.float64(0.0)} no tip [5,0]
 """
 
 """
