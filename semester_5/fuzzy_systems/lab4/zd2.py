@@ -44,7 +44,7 @@ values = []
 
 for item in items_values:
     output = ctrl.evaluate({'items':item}, (item,))
-    print(output)
+    print(f"{output} -> dla {item} przedmiotów")
     values.append(float(output['bonus']))
 
 fig = go.Figure()
