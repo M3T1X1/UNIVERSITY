@@ -1,6 +1,6 @@
 import numpy as np
 from pyit2fls import T1TSK, T1FS, tri_mf, trapezoid_mf
-import matplotlib.pyplot as plt
+from plotly import graph_objects as go
 
 items_universe = np.linspace(0.0, 150.0, 10)
 
@@ -40,10 +40,28 @@ ctrl.add_rule([('items',high_items)],[('bonus',medium_bonus)])
 ctrl.add_rule([('items',very_high_items)],[('bonus',high_bonus)])
 
 items_values = [0,50,60,70,80,90,110,140]
+values = []
 
 for item in items_values:
     output = ctrl.evaluate({'items':item}, (item,))
     print(output)
+    values.append(float(output['bonus']))
+
+fig = go.Figure()
+
+fig.add_trace(go.Scatter(x=items_values,
+                         y=values,
+                         mode='lines+markers',
+                         name = "bonus"))
+
+fig.update_layout(
+    title = "Bonus w zaleznosci od ilosci produktow",
+    xaxis_title="Items",
+    yaxis_title="Bonus"
+)
+
+fig.show()
+
 
 """
 {'bonus': np.float64(-10.0)}
