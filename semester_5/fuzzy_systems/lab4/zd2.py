@@ -2,7 +2,7 @@ import numpy as np
 from pyit2fls import T1TSK, T1FS, tri_mf, trapezoid_mf
 from plotly import graph_objects as go
 
-items_universe = np.linspace(0.0, 150.0, 10)
+items_universe = np.linspace(0.0, 160.0, 10)
 
 zero_items = T1FS(items_universe, trapezoid_mf, [-1, 0, 0, 1, 1.0])
 low_items = T1FS(items_universe, trapezoid_mf, [-1, 0, 48, 50, 1.0])
