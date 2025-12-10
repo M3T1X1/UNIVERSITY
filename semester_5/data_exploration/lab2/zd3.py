@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 
 #Odczytanie tablicy treningowej i testowej
-datasetTR_origin = pd.read_csv('rezygnacje.csv') #Odczytanie zbioru danych
+datasetTR_origin = pd.read_csv('../praca_wlasna2/rezygnacje.csv') #Odczytanie zbioru danych
 datasetTST_origin = pd.read_csv('czy_zrezygnuja.csv')
 # wyodrębnienie kolumn: CZAS_POSIADANIA, PLAN_MIEDZY, POCZTA_G, L_WIAD_POCZTA_G, L_POL_BIURO, REZYGN.
 datasetTrain = datasetTR_origin[['CZAS_POSIADANIA', 'PLAN_MIEDZY', 'POCZTA_G', 'L_WIAD_POCZTA_G', 'L_POL_BIURO', 'REZYGN']]

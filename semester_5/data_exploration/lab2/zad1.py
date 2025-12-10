@@ -18,7 +18,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
-data = pd.read_csv('rezygnacje.csv')
+data = pd.read_csv('../praca_wlasna2/rezygnacje.csv')
 
 column_number = data.shape[1]
 row_number = data.shape[0]
