@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-void letter_counting() {
-    FILE *fp = fopen("sample.txt","r");
+void letter_counting(const char *filename) {
+    FILE *fp = fopen(filename,"r");
 
     if (fp == NULL) {
         perror("Error opening file");
@@ -37,12 +37,19 @@ void letter_counting() {
     // wyświetlanie histogramu na konsoli
     for (int i = 0; i < 26; i++) {
         if (histogram[i] > 0) {
-            printf("%c: %d\n", 'a' + i, histogram[i]);  // do 'a' dodajemy wartość i przez co powstaje kolejna litera
+            printf("%c: %d\n", 'a' + i, histogram[i]);  // do 'a' dodajemy wartość i, przez co powstaje kolejna litera
         }
     }
 }
 
-int main() {
-    letter_counting();
+int main(const int argc, char *argv[]) {
+    // sprawdzanie ilości podanych argumentów
+    if (argc != 2) {
+        printf("You provided either too many, or too few arguments\n");
+        return 1;
+    }
+
+    letter_counting(argv[1]);
+
     return 0;
 }
