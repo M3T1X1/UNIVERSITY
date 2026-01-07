@@ -1,3 +1,6 @@
+; nasm -f elf64 sysexit.asm -o sysexit.o
+; ld -lc -dynamic-linker /lib64/ld-linux-x86-64.so.2 sysexit.o -o sysexitasm
+
 section .data
     child_fmt:  db "Child (PID %d)",10,0
     parent_fmt: db "Parent (PID %d).",10,0
