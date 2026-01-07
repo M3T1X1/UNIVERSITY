@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+// gcc histogram.c -o histogram
+
 void letter_counting(const char *filename) {
     FILE *fp = fopen(filename,"r");
 
@@ -32,6 +34,7 @@ void letter_counting(const char *filename) {
 
     if (empty_file_check == 0) {
         printf("File does not contain letters\n");
+        return;
     }
 
     // wyświetlanie histogramu na konsoli
