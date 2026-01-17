@@ -1,83 +1,89 @@
 ; nasm -f elf64 sysexit.asm -o sysexit.o
-; ld -lc -dynamic-linker /lib64/ld-linux-x86-64.so.2 sysexit.o -o sysexitasm
+; ld -lc -dynamic-linker /lib64/ld-linux-x86-64.so.2 sysexit.o -o sysexit_asm
 
 section .data
-    child_fmt:  db "Child (PID %d)",10,0
-    parent_fmt: db "Parent (PID %d).",10,0
-    ended_fmt:  db "Child after _exit(42) (PID %d).",10,0
-    status_fmt: db "Exit status : %d",10,0
-
-section .bss
-    status:     resq 1      ; Bufor na status zakończenia dziecka
-    child_pid:  resq 1      ; Przechowanie PID utworzonego procesu potomnego
+    msg_error       db "Podaj dokładnie 1 argument!", 10, 0
+    msg_not_digit   db "Argument musi być TYLKO liczbą całkowitą!", 10, 0
+    fmt_before      db "String przed _exit(%d)", 10, 0
+    fmt_after       db "String po _exit(%d), ktory nigdy się nie wykona.", 10, 0
 
 section .text
-    extern printf
     global _start
+    extern printf, atoi
 
 _start:
-    sub rsp, 8              ; rsp -= 8: wyrównaj stos do 16B (wymóg ABI dla wywołań funkcji C)
+    ; Na starcie programu w Linux x86_64:
+    ; [rsp]      = argc
+    ; [rsp + 8]  = argv[0] (ścieżka programu)
+    ; [rsp + 16] = argv[1] (pierwszy argument)
 
-;   Pobranie PID rodzica
-    mov rax, 39             ; rax = 39: syscall getpid()
-    syscall
-    mov rsi, rax            ; rsi = parentPID (drugi argument printf)
-    mov rdi, parent_fmt     ; rdi = &parent_fmt (pierwszy argument printf)
-    xor rax, rax            ; rax = 0: brak zmiennych zmiennoprzecinkowych dla printf
+    mov rdi, [rsp]          ; Pobierz argc do rdi
+
+    ; Sprawdzenie: if (argc == 1 || argc != 2) -> czyli musi być dokładnie 2 (program + 1 arg)
+    cmp rdi, 2
+    je validate_input
+
+    ; Jeśli argc != 2, wypisz błąd i zakończ
+    mov rdi, msg_error
+    xor rax, rax            ; AL=0 dla printf (brak argumentów float)
     call printf
 
-    ; 2. Wykonaj fork
-    mov rax, 57             ; rax = 57: syscall fork()
+    mov rax, 60             ; syscall: exit
+    mov rdi, -1             ; return -1
     syscall
 
-    cmp rax, 0
-    jl exit_program         ; skok jeśli rax < 0: fork() error (błąd tworzenia procesu)
-    jz child_process        ; skok jeśli rax == 0: kod wykonywany przez proces potomny
+validate_input:
+    mov rbx, [rsp + 16]     ; rbx = argv[1]
+    mov rcx, 0              ; i = 0
 
-parent_process:
-    mov [child_pid], rax    ; zapisz PID dziecka (w rodzicu fork zwraca PID potomka)
-    mov rdi, [child_pid]    ; rdi = PID dziecka, na które czekamy
-    mov rsi, status         ; rsi = wskaźnik na miejsce zapisu statusu wyjścia
-    xor rdx, rdx            ; rdx = 0: brak dodatkowych opcji (options)
-    xor r10, r10            ; r10 = 0: brak statystyk zużycia zasobów (rusage)
-    mov rax, 61             ; rax = 61: syscall wait4()
-    syscall
+check_loop:
+    movzx rax, byte [rbx + rcx] ; Pobierz znak argv[1][i]
+    test al, al                 ; Sprawdź czy to koniec stringa (\0)
+    jz convert_and_exit
 
-    ; 3. Wypisz PID rodzica po zakończeniu dziecka
-    mov rax, 39             ; getpid() - ponownie pobieramy PID rodzica
-    syscall
-    mov rsi, rax            ; rsi = PID rodzica (do wyświetlenia w ended_fmt)
-    mov rdi, ended_fmt      ; rdi = adres formatu komunikatu o zakończeniu
-    xor rax, rax            ; rax = 0: przygotowanie do printf
+    ; Odpowiednik isdigit(): sprawdź czy w zakresie '0' - '9' (ASCII 48-57)
+    cmp al, '0'
+    jl not_digit_error
+    cmp al, '9'
+    jg not_digit_error
+
+    inc rcx
+    jmp check_loop
+
+not_digit_error:
+    mov rdi, msg_not_digit
+    xor rax, rax
     call printf
 
-    ; 4. Wypisz status wyjścia
-    mov rax, [status]       ; załaduj pełne słowo statusu odebrane przez wait4
-    shr rax, 8              ; przesuń w prawo o 8 bitów (kod wyjścia jest w starszym bajcie słowa)
-    and rax, 0xFF           ; maskuj dolny bajt (wyciągnięcie właściwej wartości exit_code)
-    mov rsi, rax            ; rsi = przetworzony kod wyjścia (42)
-    mov rdi, status_fmt     ; rdi = adres formatu statusu
-    xor rax, rax            ; rax = 0: brak zmiennych XMM
-    call printf
-
-    jmp exit_program        ; skok do zakończenia procesu rodzica
-
-child_process:
-    ; 5. Pobierz i wypisz PID dziecka
-    mov rax, 39             ; getpid() - pobranie PID aktualnego (potomnego) procesu
-    syscall
-    mov rsi, rax            ; rsi = PID dziecka
-    mov rdi, child_fmt      ; rdi = adres formatu dla dziecka
-    xor rax, rax            ; rax = 0: przygotowanie do printf
-    call printf
-
-    ; Zakończ dziecko z kodem 42
-    mov rax, 60             ; rax = 60: syscall exit()
-    mov rdi, 42             ; rdi = 42: kod powrotu przekazywany do rodzica
+    mov rax, 60             ; syscall: exit
+    mov rdi, 1              ; _exit(1)
     syscall
 
-exit_program:
-    add rsp, 8              ; przywróć wskaźnik stosu (cofnij wyrównanie)
-    mov rax, 60             ; rax = 60: syscall exit()
-    xor rdi, rdi            ; rdi = 0: kod wyjścia programu głównego
+convert_and_exit:
+    ; Przygotowanie do atoi(argv[1])
+    mov rdi, rbx            ; rdi = argv[1]
+    call atoi               ; wynik w rax
+    mov r12, rax            ; r12 = error_code (używamy r12, bo printf go nie nadpisze)
+
+    ; printf("String przed _exit(%d)\n", error_code)
+    mov rdi, fmt_before
+    mov rsi, r12
+    xor rax, rax
+    call printf
+
+    ; WYWOŁANIE _exit(error_code)
+    mov rax, 60             ; numer syscalla sys_exit
+    mov rdi, r12            ; status wyjścia
+    syscall                 ; <-- Tutaj proces kończy życie
+
+    ; KOD PONIŻEJ NIGDY SIĘ NIE WYKONA
+    ; Zachowujemy go dla 100% zgodności z Twoim kodem C
+    mov rdi, fmt_after
+    mov rsi, r12
+    xor rax, rax
+    call printf
+
+    ; Dodatkowy exit na wszelki wypadek (choć proces już nie istnieje)
+    mov rax, 60
+    xor rdi, rdi
     syscall
