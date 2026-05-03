@@ -61,12 +61,12 @@ def lucas_kanade(img1, img2, keypoints, window_size=5):
 
         # cuts small windows from given gradient map,
         # makes them "flat" or "inline"
-        Ix_windows = Ix[y_start:y_end, x_start:x_end].flatten()
-        Iy_windows = Iy[y_start:y_end, x_start:x_end].flatten()
-        It_windows = It[y_start:y_end, x_start:x_end].flatten()
+        ix_windows = Ix[y_start:y_end, x_start:x_end].flatten()
+        iy_windows = Iy[y_start:y_end, x_start:x_end].flatten()
+        it_windows = It[y_start:y_end, x_start:x_end].flatten()
 
-        matrix_A = np.vstack((Ix_windows, Iy_windows)).T # puts Ix above Iy and rotates it
-        vector_b = -It_windows.reshape(-1,1) #
+        matrix_A = np.vstack((ix_windows, iy_windows)).T # puts Ix above Iy and rotates it
+        vector_b = -it_windows.reshape(-1,1) #
 
         #v = (A^T * A)^-1 * A^T * b
         try:
@@ -121,6 +121,20 @@ def iterative_lucas_kanade(img1, img2, keypoints, window_size=9, num_iters=7, g=
 
         # TODO: Compute inverse of G at point (x1, y1)
         ### YOUR CODE HERE
+
+        y_min, y_max = max(0, y1-w), min(img1.shape[0], y1+w+1)
+        x_min, x_max = max(0, x1-w), min(img1.shape[1], x1+w+1)
+
+        Ix_patch = Ix[y_min:y_max, x_min:x_max].flatten()
+        Iy_patch = Iy[y_min:y_max, x_min:x_max].flatten()
+
+        g11 = np.sum(Ix_patch**2)
+        g12 = np.sum(Iy_patch* Ix_patch)
+        g22 = np.sum(Iy_patch**2)
+
+        g_matrix = np.array([[g11,g12],[g12,g22]])
+
+        inv_g_matrix = np.linalg.inv(g_matrix)
         pass
         ### END YOUR CODE
 
@@ -133,9 +147,19 @@ def iterative_lucas_kanade(img1, img2, keypoints, window_size=9, num_iters=7, g=
 
             # TODO: Compute bk and vk = inv(G) x bk
             ### YOUR CODE HERE
-            pass
-            ### END YOUR CODE
 
+            # checks if given window is aligned correctly
+            if y2 - w < 0 or y2 + w + 1 > img2.shape[0] or x2 - w < 0 or x2 + w + 1 > img2.shape[1]:
+                break
+
+            patch_i = img1[y1-w:y1+w+1, x1-w:x1+w+1]
+            patch_j = img2[y2-w:y2+w+1, x2-w:x2+w+1]
+
+            delta_i = (patch_i - patch_j).flatten()
+
+            bk = np.array([np.sum(delta_i * Ix_patch), (np.sum(delta_i * Iy_patch))])
+
+            vk = inv_g_matrix @ bk
             # Update flow vector by vk
             v += vk
 
@@ -194,10 +218,18 @@ def compute_error(patch1, patch2):
         error - Number representing mismatch between patch1 and patch2
     """
     assert patch1.shape == patch2.shape, "Different patch shapes"
-    error = 0
-    ### YOUR CODE HERE
-    pass
-    ### END YOUR CODE
+
+    mean1 = np.mean(patch1)
+    std1 = np.std(patch1)
+
+    mean2 = np.mean(patch2)
+    std2 = np.std(patch2)
+
+    p1_normalized = (patch1 - mean1) / (std1 + 1e-6)
+    p2_normalized = (patch2 - mean2) / (std2 + 1e-6)
+
+    error = np.mean((p1_normalized - p2_normalized) ** 2)
+
     return error
 
 
