@@ -1,0 +1,3 @@
+To linia pierwsza
+Tutaj znajduje sie linia druga
+Linia 3 jest tutaj
