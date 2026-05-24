@@ -1,0 +1,8 @@
+# Equalizer APO Configuration File
+# Preset: Heavy Metal Optimization
+# Target: Enhanced bass punch, aggressive guitar crunch, and crisp cymbals while controlling muddiness.
+
+Preamp: 8.2 dB
+
+# Graphic EQ: 15-band configuration
+GraphicEQ: 25 0; 40 2.5; 63 4; 100 3.5; 160 1.5; 250 -1; 400 -2; 630 -1.5; 1000 0.5; 1600 2; 2500 3; 4000 3.5; 6300 2.5; 10000 3; 16000 1.5
